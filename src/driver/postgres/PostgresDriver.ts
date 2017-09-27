@@ -290,7 +290,7 @@ export class PostgresDriver implements Driver {
             || columnMetadata.type === "timestamp"
             || columnMetadata.type === "timestamp with time zone"
             || columnMetadata.type === "timestamp without time zone") {
-            return DateUtils.mixedDateToDate(value, true);
+            return DateUtils.mixedDateToDate(value, false);
 
         } else if (columnMetadata.type === "json" || columnMetadata.type === "jsonb") {
             return JSON.stringify(value);
@@ -320,7 +320,7 @@ export class PostgresDriver implements Driver {
             || columnMetadata.type === "timestamp"
             || columnMetadata.type === "timestamp with time zone"
             || columnMetadata.type === "timestamp without time zone") {
-            return DateUtils.normalizeHydratedDate(value);
+            return DateUtils.normalizeHydratedDate(value, false);
 
         } else if (columnMetadata.type === "date") {
             return DateUtils.mixedDateToDateString(value);
@@ -383,7 +383,7 @@ export class PostgresDriver implements Driver {
             type += "character varying";
 
         } else if (column.type === Date) {
-            type += "timestamp";
+            type += "timestamp with time zone";
 
         } else if (column.type === Boolean) {
             type += "boolean";

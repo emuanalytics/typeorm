@@ -10,22 +10,21 @@ export class DateUtils {
     /**
      * Normalizes date object hydrated from the database.
      */
-    static normalizeHydratedDate(mixedDate: Date|string|undefined): Date|string|undefined {
+    static normalizeHydratedDate(mixedDate: Date|string|undefined, fromUtc: boolean = true): Date|string|undefined {
         if (!mixedDate)
             return mixedDate;
 
         const date = typeof mixedDate === "string" ? new Date(mixedDate) : mixedDate as Date;
-        // if (!storedInLocal) {
+        if (fromUtc) {
 
-        // else if it was not stored in local timezone, means it was stored in UTC
-        // because driver hydrates it with timezone applied why we need to add timezone hours to match a local timezone
+            // If driver converted value to UTC before persisting it then convert it back into local time here.
+            const correctedDate = new Date();
+            correctedDate.setUTCFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+            correctedDate.setUTCHours(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+            return correctedDate;
+        }
 
-        const correctedDate = new Date();
-        correctedDate.setUTCFullYear(date.getFullYear(), date.getMonth(), date.getDate());
-        correctedDate.setUTCHours(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
-        return correctedDate;
-        // }
-        // return date;
+        return date;
     }
 
     /**

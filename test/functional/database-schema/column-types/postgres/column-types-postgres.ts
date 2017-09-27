@@ -283,7 +283,7 @@ describe("database schema > column types > postgres", () => {
         table!.findColumnByName("id")!.type.should.be.equal("integer");
         table!.findColumnByName("name")!.type.should.be.equal("character varying");
         table!.findColumnByName("bit")!.type.should.be.equal("boolean");
-        table!.findColumnByName("datetime")!.type.should.be.equal("timestamp without time zone");
+        table!.findColumnByName("datetime")!.type.should.be.equal("timestamp with time zone");
 
     })));
 
